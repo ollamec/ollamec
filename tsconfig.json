@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    // Runtime & environment
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ESNext"],
+    "types": ["bun-types"],
+
+    // Alias for internal + consumer-friendly imports
+    "baseUrl": "./",
+    "paths": {
+      "@ollamec/framework/*": ["./*"]
+    },
+
+    // Strict mode + safety
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Modern module handling
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true
+  }
+}
