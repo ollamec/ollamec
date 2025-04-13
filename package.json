@@ -1,5 +1,5 @@
 {
-  "name": "@ollamec/core",
+  "name": "@ollamec/framework",
   "version": "0.1.0",
   "description": "Core framework for building MCP-compliant LLM agents using Ollama + Bun.",
   "license": "MIT",
