@@ -1,11 +1,42 @@
 {
-  "name": "ollamec/ollamec",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
+  "name": "@ollamec/core",
+  "version": "0.1.0",
+  "description": "Core framework for building MCP-compliant LLM agents using Ollama + Bun.",
+  "license": "MIT",
+  "author": "Ollamec Org <github@ollamec.io>",
+  "contributors": [
+    {
+      "name": "Angel S. Moreno",
+      "email": "angelxmoreno@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ollamec/ollamec.git"
+  },
+  "homepage": "https://github.com/ollamec/ollamec#readme",
+  "bugs": {
+    "url": "https://github.com/ollamec/ollamec/issues"
+  },
+  "keywords": [
+    "llm",
+    "mcp",
+    "bun",
+    "cli",
+    "toolkit",
+    "ollama",
+    "agent-framework",
+    "cli-llm-client"
+  ],
+  "scripts": {
+    "dev": "bun run bin/ollamec.ts",
+    "test": "bun test"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@types/bun": "latest"
   }
 }
