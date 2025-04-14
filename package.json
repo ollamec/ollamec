@@ -29,6 +29,8 @@
     "cli-llm-client"
   ],
   "scripts": {
+    "lint": "bun biome check .",
+    "lint:fix": "bun biome check --write",
     "dev": "bun run bin/ollamec.ts",
     "test": "bun test"
   },
@@ -38,5 +40,11 @@
   "peerDependencies": {
     "typescript": "^5.0.0",
     "@types/bun": "latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "lefthook": "^1.11.9"
   }
 }
