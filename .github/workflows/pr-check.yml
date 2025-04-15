@@ -1,4 +1,4 @@
-name: Test & Coverage
+name: "PR Check: Lint, Unit Tests, and Coverage"
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  unit-tests:
+  lint-and-test:
     runs-on: ubuntu-latest
 
     steps:
