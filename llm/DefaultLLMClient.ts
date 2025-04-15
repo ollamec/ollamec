@@ -13,7 +13,9 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class DefaultLLMClient implements LLMClientInterface {
   async chat(request: ChatRequest): Promise<ChatResponse> {
-    const lastUserMsg = request.messages.findLast((m) => m.role === 'user');
+    const lastUserMsg = request.messages.findLast(
+      (message) => message.role === 'user'
+    );
 
     const reply: ChatMessage = {
       role: 'assistant',

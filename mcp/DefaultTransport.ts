@@ -2,7 +2,7 @@ import type {
   TransportInterface,
   TransportMessage,
   TransportResponse,
-} from '@ollamec/framework//core/interfaces/TransportInterface.ts';
+} from '@ollamec/framework/core/interfaces/TransportInterface.ts';
 import { injectable } from 'tsyringe';
 
 /**

@@ -1,7 +1,8 @@
 import type { ChatMessage } from '@ollamec/framework/core/interfaces/LLMClientInterface';
 
 /**
- * The context of a memory session.
+ * Context metadata for a memory session.
+ * A session groups messages together across invocations.
  */
 export interface MemorySession {
   /**
@@ -16,10 +17,10 @@ export interface MemorySession {
 }
 
 /**
- * MemoryStore is responsible for storing and retrieving
- * past LLM messages based on a given session.
+ * Interface for storing and retrieving chat message history
+ * tied to a specific memory session.
  *
- * This allows the prompt manager to inject relevant prior context.
+ * Used by the PromptManager to inject prior context into prompts.
  */
 export interface MemoryStoreInterface {
   /**

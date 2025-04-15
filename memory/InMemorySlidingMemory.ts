@@ -6,9 +6,12 @@ import type {
 import { injectable } from 'tsyringe';
 
 /**
- * A basic in-memory implementation of `MemoryStore`.
+ * A basic in-memory implementation of `MemoryStoreInterface`.
  * Stores all messages in a local map by session ID.
  * No eviction, pagination is simulated via slice.
+ *
+ * ⚠️ WARNING: This implementation does not persist data across application restarts.
+ * For production use, consider implementing a persistent memory strategy.
  */
 @injectable()
 export class InMemorySlidingMemory implements MemoryStoreInterface {
@@ -18,7 +21,10 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
     session: MemorySession,
     options?: { limit?: number; offset?: number }
   ): Promise<ChatMessage[]> {
-    const allMessages = this.store.get(session.sessionId) || [];
+    const allMessages = this.store.get(session.sessionId);
+    if (!allMessages) {
+      throw new Error(`No messages found for session ID: ${session.sessionId}`);
+    }
     const offset = options?.offset ?? 0;
     const limit = options?.limit ?? allMessages.length;
     return allMessages.slice(-offset - limit, -offset || undefined);
@@ -26,6 +32,7 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
 
   async save(session: MemorySession, messages: ChatMessage[]): Promise<void> {
     const existing = this.store.get(session.sessionId) ?? [];
-    this.store.set(session.sessionId, [...existing, ...messages]);
+    existing.push(...messages);
+    this.store.set(session.sessionId, existing);
   }
 }
