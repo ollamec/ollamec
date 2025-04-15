@@ -1,5 +1,6 @@
 import { TOKENS, registerClass } from '../config/ollamec.config.ts';
 
+import { DefaultLLMClient } from '@ollamec/framework/llm/DefaultLLMClient';
 import { InMemorySlidingMemory } from '../memory/InMemorySlidingMemory.ts';
 import { DefaultPromptManager } from './DefaultPromptManager.ts';
 import { DefaultToolManager } from './DefaultToolManager.ts';
@@ -32,4 +33,9 @@ export function registerBuiltInImplementations(): void {
    * Register the default in-memory memory store for loading and saving chat history.
    */
   registerClass(TOKENS.MemoryStore, InMemorySlidingMemory);
+
+  /**
+   * Register the default LLM client, which returns a stubbed echo response.
+   */
+  registerClass(TOKENS.LLMClient, DefaultLLMClient);
 }
