@@ -29,6 +29,7 @@
     "cli-llm-client"
   ],
   "scripts": {
+    "prepare": "if [ \"$CI\" = \"true\" ]; then echo 'CI detected: skipping lefthook install'; else bunx lefthook install; fi",
     "docs:check": "bun run scripts/check-docs.ts",
     "lint": "bun biome check .",
     "lint:fix": "bun biome check --write",
