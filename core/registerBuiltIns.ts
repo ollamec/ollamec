@@ -1,6 +1,7 @@
 import { TOKENS, registerClass } from '../config/ollamec.config.ts';
 
 import { DefaultLLMClient } from '@ollamec/framework/llm/DefaultLLMClient';
+import { DefaultTransport } from '@ollamec/framework/mcp/DefaultTransport';
 import { InMemorySlidingMemory } from '../memory/InMemorySlidingMemory.ts';
 import { DefaultPromptManager } from './DefaultPromptManager.ts';
 import { DefaultToolManager } from './DefaultToolManager.ts';
@@ -38,4 +39,9 @@ export function registerBuiltInImplementations(): void {
    * Register the default LLM client, which returns a stubbed echo response.
    */
   registerClass(TOKENS.LLMClient, DefaultLLMClient);
+
+  /**
+   * Register the default transport layer, which simulates LLM interaction.
+   */
+  registerClass(TOKENS.Transport, DefaultTransport);
 }
