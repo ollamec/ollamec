@@ -48,5 +48,8 @@
     "@commitlint/config-conventional": "^19.8.0",
     "lefthook": "^1.11.9",
     "typedoc": "^0.28.2"
+  },
+  "dependencies": {
+    "tsyringe": "^4.9.1"
   }
 }
