@@ -1,10 +1,10 @@
 import { TOKENS, registerClass } from '../config/ollamec.config.ts';
 
+import { DefaultPromptManager } from '@ollamec/framework/core/DefaultPromptManager.ts';
+import { DefaultToolManager } from '@ollamec/framework/core/DefaultToolManager.ts';
 import { DefaultLLMClient } from '@ollamec/framework/llm/DefaultLLMClient';
 import { DefaultTransport } from '@ollamec/framework/mcp/DefaultTransport';
-import { InMemorySlidingMemory } from '../memory/InMemorySlidingMemory.ts';
-import { DefaultPromptManager } from './DefaultPromptManager.ts';
-import { DefaultToolManager } from './DefaultToolManager.ts';
+import { InMemorySlidingMemory } from '@ollamec/framework/memory/InMemorySlidingMemory.ts';
 
 /**
  * Registers the default Ollamec strategy implementations into the global DI container.

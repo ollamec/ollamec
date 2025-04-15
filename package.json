@@ -34,7 +34,7 @@
     "lint": "bun biome check .",
     "lint:fix": "bun biome check --write",
     "dev": "bun run bin/ollamec.ts",
-    "test": "bun test"
+    "test:unit": "bun test tests/unit --coverage --coverage-reporter=text"
   },
   "engines": {
     "bun": ">=1.0.0"
