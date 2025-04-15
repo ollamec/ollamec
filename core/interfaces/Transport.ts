@@ -28,7 +28,7 @@ export interface TransportResponse {
   id: string;
 
   /**
-   * The final output from the LLM (or error info).
+   * The final output from the LLM (or a fallback message in case of error).
    */
   output: string;
 
@@ -38,9 +38,29 @@ export interface TransportResponse {
   success: boolean;
 
   /**
-   * Optional error message or details.
+   * Optional structured error object containing additional diagnostics.
    */
-  error?: string;
+  error?: {
+    /**
+     * A human-readable description of the error.
+     */
+    message: string;
+
+    /**
+     * An optional error code for programmatic handling.
+     */
+    code?: string;
+
+    /**
+     * Arbitrary structured data related to the error.
+     */
+    details?: Record<string, unknown>;
+
+    /**
+     * An optional stack trace for debugging purposes.
+     */
+    stack?: string;
+  };
 }
 
 /**

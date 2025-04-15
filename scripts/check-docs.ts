@@ -41,7 +41,7 @@ interface MissingDoc {
   file?: string;
 }
 
-// Step 1: Run TypeDoc on just the changed files
+// Generate TypeDoc JSON output to analyze documentation coverage of changed files
 try {
   console.log('Checking documentation for:', ...files);
   execSync(
@@ -50,12 +50,12 @@ try {
       stdio: 'inherit',
     }
   );
-} catch {
-  console.error('❌ Failed to run TypeDoc.');
+} catch (error) {
+  console.error('❌ Failed to run TypeDoc:', error);
   process.exit(1);
 }
 
-// Step 2: Parse output
+// Parse the generated TypeDoc JSON and extract relevant documentation nodes
 if (!existsSync(TYPEDOC_JSON)) {
   console.error('❌ TypeDoc output not found.');
   process.exit(1);
@@ -85,7 +85,7 @@ function checkNode(node: TypeDocNode): void {
 
 checkNode(root);
 
-// Step 3: Report
+// Output results and fail if any exported symbols are missing TSDoc comments
 if (missingDocs.length > 0) {
   console.error('\n❌ Missing documentation for exported symbols:\n');
   for (const doc of missingDocs) {

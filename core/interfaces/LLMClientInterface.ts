@@ -3,7 +3,8 @@
  */
 export interface ChatMessage {
   /**
-   * The role of the message sender (e.g., system, user, assistant).
+   * The role of the message sender. Common values are 'system', 'user', and 'assistant',
+   * but custom strings may be used for specialized agents or tools (e.g., 'function', 'search-agent').
    */
   role: 'system' | 'user' | 'assistant' | string;
 

@@ -26,9 +26,18 @@ export interface MemoryStore {
    * Retrieve prior messages from memory for a given session.
    *
    * @param session - The memory session context.
-   * @returns An ordered array of previous messages.
+   * @param options - Optional pagination controls:
+   *   - `limit`: Maximum number of messages to retrieve (most recent first).
+   *   - `offset`: Number of recent messages to skip (for pagination).
+   * @returns An ordered array of previous messages, typically in chronological order.
    */
-  load(session: MemorySession): Promise<ChatMessage[]>;
+  load(
+    session: MemorySession,
+    options?: {
+      limit?: number;
+      offset?: number;
+    }
+  ): Promise<ChatMessage[]>;
 
   /**
    * Store new messages to memory for a given session.

@@ -15,7 +15,8 @@ export interface PromptContext {
   memory?: ChatMessage[];
 
   /**
-   * The result of tool calls relevant to this prompt.
+   * The results from external tool executions that should be included in the prompt.
+   * For example: { "search": { results: [...] }, "calculator": { result: 42 } }
    */
   toolResponses?: Record<string, unknown>;
 
