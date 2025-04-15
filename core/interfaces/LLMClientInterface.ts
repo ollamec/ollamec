@@ -1,5 +1,6 @@
 /**
- * Represents a single message in the LLM conversation.
+ * A single message in a structured LLM conversation.
+ * This format mirrors OpenAI-style role/content messages.
  */
 export interface ChatMessage {
   /**
@@ -20,7 +21,8 @@ export interface ChatMessage {
 }
 
 /**
- * The input shape for an LLM chat request.
+ * A structured request sent to an LLM client.
+ * Includes message history and optional generation parameters.
  */
 export interface ChatRequest {
   /**
@@ -50,7 +52,8 @@ export interface ChatRequest {
 }
 
 /**
- * The response shape from an LLM chat completion.
+ * The response returned by an LLM client after completing a chat request.
+ * Includes generated message(s) and metadata such as usage or finish reason.
  */
 export interface ChatResponse {
   /**
@@ -93,10 +96,10 @@ export interface ChatResponse {
 }
 
 /**
- * Interface for an LLM client implementation.
+ * Interface for an LLM client that can handle structured chat requests.
  *
- * This abstraction allows plugging in different LLM providers (e.g., Ollama, OpenAI, Claude)
- * using the Strategy pattern. Implementations must be registered via DI.
+ * Implementations should convert the request into an API call or model inference
+ * and return a structured response object that includes one or more assistant messages.
  */
 export interface LLMClientInterface {
   /**

@@ -1,7 +1,7 @@
 import type { ChatMessage } from '@ollamec/framework/core/interfaces/LLMClientInterface';
 
 /**
- * Context information passed to the PromptManager.
+ * Context information passed to the PromptManagerInterface.
  */
 export interface PromptContext {
   /**
@@ -27,13 +27,13 @@ export interface PromptContext {
 }
 
 /**
- * PromptManager is responsible for building the final prompt messages
+ * PromptManagerInterface is responsible for building the final prompt messages
  * array to be sent to the LLM.
  *
  * Implementations can customize how memory, tools, and user input are
  * composed into a structured prompt.
  */
-export interface PromptManager {
+export interface PromptManagerInterface {
   /**
    * Compose an array of structured prompt messages.
    *
