@@ -23,7 +23,7 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
   ): Promise<ChatMessage[]> {
     const allMessages = this.store.get(session.sessionId);
     if (!allMessages) {
-      throw new Error(`No messages found for session ID: ${session.sessionId}`);
+      throw new Error('No messages found for session');
     }
     const offset = options?.offset ?? 0;
     const limit = options?.limit ?? allMessages.length;
@@ -32,7 +32,6 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
 
   async save(session: MemorySession, messages: ChatMessage[]): Promise<void> {
     const existing = this.store.get(session.sessionId) ?? [];
-    existing.push(...messages);
-    this.store.set(session.sessionId, existing);
+    this.store.set(session.sessionId, [...existing, ...messages]);
   }
 }
