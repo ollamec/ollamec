@@ -12,13 +12,29 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class DefaultPromptManager implements PromptManagerInterface {
   async buildPrompt(context: PromptContext): Promise<ChatMessage[]> {
-    const chatHistory = context.chatHistory ?? [];
+    const messages: ChatMessage[] = [];
 
-    const userMessage: ChatMessage = {
+    // 1. Add chat history
+    if (context.chatHistory) {
+      messages.push(...context.chatHistory);
+    }
+
+    // 2. Add tool responses
+    if (context.toolResponses) {
+      for (const [toolName, result] of Object.entries(context.toolResponses)) {
+        messages.push({
+          role: 'tool',
+          content: `[${toolName}]\n${JSON.stringify(result)}`,
+        });
+      }
+    }
+
+    // 3. Add user input
+    messages.push({
       role: 'user',
       content: context.userInput,
-    };
+    });
 
-    return [...chatHistory, userMessage];
+    return messages;
   }
 }

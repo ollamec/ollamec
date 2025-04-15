@@ -24,4 +24,32 @@ describe('DefaultPromptManager', () => {
       { role: 'user', content: 'Tell me about Ollamec.' },
     ]);
   });
+
+  it('should include tool responses as tool messages', async () => {
+    const manager = new DefaultPromptManager();
+
+    const result = await manager.buildPrompt({
+      userInput: 'What did the calculator return?',
+      chatHistory: [],
+      toolResponses: {
+        calculator: { result: 42 },
+        search: { results: ['foo', 'bar'] },
+      },
+    });
+
+    expect(result).toEqual([
+      {
+        role: 'tool',
+        content: '[calculator]\n{"result":42}',
+      },
+      {
+        role: 'tool',
+        content: '[search]\n{"results":["foo","bar"]}',
+      },
+      {
+        role: 'user',
+        content: 'What did the calculator return?',
+      },
+    ]);
+  });
 });
