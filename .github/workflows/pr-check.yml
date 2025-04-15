@@ -1,0 +1,36 @@
+name: "PR Check: Lint, Unit Tests, and Coverage"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.6
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Lint project files
+        run: bun run lint
+
+      - name: Run unit tests with coverage
+        run: bun test tests/unit --coverage --coverage-reporter=lcov
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+          flags: unittests

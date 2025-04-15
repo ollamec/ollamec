@@ -1,5 +1,5 @@
 # @ollamec/framework
-
+[![codecov](https://codecov.io/gh/ollamec/ollamec/graph/badge.svg?token=03Y1TVHIT7)](https://codecov.io/gh/ollamec/ollamec)
 > Core developer framework for building MCP-compliant LLM agents with Ollama and Bun.
 
 This is the foundational package in the **Ollamec** ecosystem. It provides a modular, strategy-based architecture for building developer-first LLM tools using the Model Context Protocol (MCP).
