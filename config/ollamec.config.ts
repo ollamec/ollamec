@@ -44,4 +44,5 @@ export function registerClass<T>(
 /**
  * Internal helper type for class constructors used in DI.
  */
-type Constructor<T> = new (...args: unknown[]) => T;
+// biome-ignore lint/suspicious/noExplicitAny: necessary to support DI constructor flexibility
+type Constructor<T> = new (...args: any[]) => T;

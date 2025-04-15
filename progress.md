@@ -172,7 +172,7 @@ These tasks complete the full runtime for local and remote usage, including LLM 
   - Support tool call syntax: `toolName(args)`
   - Inject outputs into LLM message flow
 
-- [ ] **Register MemoryStore via DI**  
+- [x] **Register MemoryStore via DI**  
   **Purpose:** Allow memory strategies to be configured by devs  
   **Path:** `memory/`, `config/`  
   **Details:**
@@ -193,7 +193,7 @@ These tasks complete the full runtime for local and remote usage, including LLM 
   - Include `summarize-text`, `format-as-json`
   - Allow auto-discovery
 
-- [ ] **Setup Test Structure**  
+- [x] **Setup Test Structure**  
   **Purpose:** Establish testing directories and integrate coverage reporting  
   **Path:** `tests/`  
   **Details:**

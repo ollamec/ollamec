@@ -8,7 +8,7 @@ import { injectable } from 'tsyringe';
 /**
  * A basic in-memory implementation of `MemoryStoreInterface`.
  * Stores all messages in a local map by session ID.
- * No eviction, pagination is simulated via slice.
+ * Automatically trims old messages to enforce a fixed-size sliding window.
  *
  * ⚠️ WARNING: This implementation does not persist data across application restarts.
  * For production use, consider implementing a persistent memory strategy.
@@ -16,6 +16,8 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class InMemorySlidingMemory implements MemoryStoreInterface {
   private store = new Map<string, ChatMessage[]>();
+
+  constructor(private readonly maxMessages: number = 100) {}
 
   async load(
     session: MemorySession,
@@ -25,6 +27,7 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
     if (!allMessages) {
       throw new Error('No messages found for session');
     }
+
     const offset = options?.offset ?? 0;
     const limit = options?.limit ?? allMessages.length;
     return allMessages.slice(-offset - limit, -offset || undefined);
@@ -32,6 +35,8 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
 
   async save(session: MemorySession, messages: ChatMessage[]): Promise<void> {
     const existing = this.store.get(session.sessionId) ?? [];
-    this.store.set(session.sessionId, [...existing, ...messages]);
+    const combined = [...existing, ...messages];
+    const trimmed = combined.slice(-this.maxMessages); // keep latest N
+    this.store.set(session.sessionId, trimmed);
   }
 }
