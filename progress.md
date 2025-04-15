@@ -189,7 +189,7 @@ These tasks complete the full runtime for local and remote usage, including LLM 
     - Include `summarize-text`, `format-as-json`
     - Allow auto-discovery
 
-- [ ] **Setup Test Structure**  
+- [x] **Setup Test Structure**  
   **Purpose:** Establish testing directories and integrate coverage reporting  
   **Path:** `tests/`  
   **Details:**
