@@ -51,7 +51,7 @@ These tasks lay the foundation for the core framework, CLI, DI system, and base 
   - Support tool call syntax: `toolName(args)`
   - Inject outputs into LLM message flow
 
-- [ ] **Register MemoryStore via DI**  
+- [X] **Register MemoryStore via DI**  
   **Purpose:** Wire up `InMemorySlidingMemory` as the default `MemoryStoreInterface` in the DI container  
   **Path:** `memory/`, `config/ollamec.config.ts`  
   **Details:**

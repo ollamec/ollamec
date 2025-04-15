@@ -7,16 +7,18 @@ import { injectable } from 'tsyringe';
 
 /**
  * Default implementation of the `PromptManagerInterface`.
- * Simply turns user input into a single-message prompt.
+ * Composes the final prompt array by including historical context and user input.
  */
 @injectable()
 export class DefaultPromptManager implements PromptManagerInterface {
   async buildPrompt(context: PromptContext): Promise<ChatMessage[]> {
-    return [
-      {
-        role: 'user',
-        content: context.userInput,
-      },
-    ];
+    const chatHistory = context.chatHistory ?? [];
+
+    const userMessage: ChatMessage = {
+      role: 'user',
+      content: context.userInput,
+    };
+
+    return [...chatHistory, userMessage];
   }
 }
