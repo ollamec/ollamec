@@ -1,9 +1,9 @@
-import { injectable } from 'tsyringe';
-import type { ChatMessage } from '../core/interfaces/LLMClientInterface.ts';
+import type { ChatMessage } from '@ollamec/framework/core/interfaces/LLMClientInterface.ts';
 import type {
   MemorySession,
-  MemoryStore,
-} from '../core/interfaces/MemoryStore.ts';
+  MemoryStoreInterface,
+} from '@ollamec/framework/core/interfaces/MemoryStoreInterface.ts';
+import { injectable } from 'tsyringe';
 
 /**
  * A basic in-memory implementation of `MemoryStore`.
@@ -11,7 +11,7 @@ import type {
  * No eviction, pagination is simulated via slice.
  */
 @injectable()
-export class InMemorySlidingMemory implements MemoryStore {
+export class InMemorySlidingMemory implements MemoryStoreInterface {
   private store = new Map<string, ChatMessage[]>();
 
   async load(

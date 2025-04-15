@@ -21,7 +21,7 @@ export interface MemorySession {
  *
  * This allows the prompt manager to inject relevant prior context.
  */
-export interface MemoryStore {
+export interface MemoryStoreInterface {
   /**
    * Retrieve prior messages from memory for a given session.
    *

@@ -1,5 +1,5 @@
 /**
- * A structured MCP request to the Transport layer.
+ * A structured MCP request to the TransportInterface layer.
  */
 export interface TransportMessage {
   /**
@@ -19,7 +19,7 @@ export interface TransportMessage {
 }
 
 /**
- * A structured response emitted by the Transport layer.
+ * A structured response emitted by the TransportInterface layer.
  */
 export interface TransportResponse {
   /**
@@ -64,12 +64,12 @@ export interface TransportResponse {
 }
 
 /**
- * The Transport interface handles inbound and outbound communication
+ * The TransportInterface interface handles inbound and outbound communication
  * between the MCP client and its external environment (e.g., CLI, server, etc).
  *
  * Implementations can stream, buffer, or batch responses.
  */
-export interface Transport {
+export interface TransportInterface {
   /**
    * Process an incoming transport message and emit a response.
    *

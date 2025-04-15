@@ -1,10 +1,10 @@
-import { injectable } from 'tsyringe';
 import type {
   ChatMessage,
   ChatRequest,
   ChatResponse,
   LLMClientInterface,
-} from '../core/interfaces/LLMClientInterface.ts';
+} from '@ollamec/framework/core/interfaces/LLMClientInterface.ts';
+import { injectable } from 'tsyringe';
 
 /**
  * A stub LLM client that echoes the last user message in the response.

@@ -10,8 +10,8 @@ import { DefaultToolManager } from './DefaultToolManager.ts';
  * Registers the default Ollamec strategy implementations into the global DI container.
  *
  * These bindings connect the framework's DI tokens to default internal classes for:
- * - Prompt composition (`PromptManager`)
- * - Tool execution (`ToolManager`)
+ * - Prompt composition (`PromptManagerInterface`)
+ * - Tool execution (`ToolManagerInterface`)
  * - Memory session handling (`MemoryStore`)
  *
  * Developers can override these bindings by registering custom implementations

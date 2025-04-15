@@ -24,7 +24,7 @@ export interface ToolResult {
 }
 
 /**
- * Input shape for executing tools within the ToolManager.
+ * Input shape for executing tools within the ToolManagerInterface.
  */
 export interface ToolInvocationContext {
   /**
@@ -39,11 +39,11 @@ export interface ToolInvocationContext {
 }
 
 /**
- * ToolManager is responsible for parsing and executing tool calls.
+ * ToolManagerInterface is responsible for parsing and executing tool calls.
  *
  * It returns structured tool results that can be injected into the prompt flow.
  */
-export interface ToolManager {
+export interface ToolManagerInterface {
   /**
    * Run tools based on the input and return their structured results.
    *
