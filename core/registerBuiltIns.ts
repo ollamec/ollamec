@@ -26,7 +26,7 @@ export function registerBuiltInImplementations(): void {
   registerClass(TOKENS.PromptManager, DefaultPromptManager);
 
   /**
-   * Register the default tool manager, which currently returns empty tool results.
+   * Register the default tool manager, which parses and dispatches tool calls.
    */
   registerClass(TOKENS.ToolManager, DefaultToolManager);
 
