@@ -56,43 +56,43 @@ export class DefaultToolManager implements ToolManagerInterface {
    */
   public async runTools(context: ToolInvocationContext): Promise<ToolResult[]> {
     const toolCalls = this.extractToolCalls(context.input);
-    const results: ToolResult[] = [];
+    return await Promise.all(
+      toolCalls.map(async ({ name, args }) => {
+        const tool = this.registry[name];
 
-    for (const { name, args } of toolCalls) {
-      const tool = this.registry[name];
+        if (!tool) {
+          return {
+            name,
+            success: false,
+            output: null,
+            error: `Tool "${name}" not found`,
+          };
+        }
 
-      if (!tool) {
-        results.push({
-          name,
-          success: false,
-          output: null,
-          error: `Tool "${name}" not found`,
-        });
-        continue;
-      }
-
-      try {
-        const output = await tool(args, context.metadata);
-        results.push({ name, success: true, output });
-      } catch (err) {
-        results.push({
-          name,
-          success: false,
-          output: null,
-          error:
-            err instanceof Error
-              ? {
-                  message: err.message,
-                  stack: err.stack,
-                  name: err.name,
-                  cause: (err as Error & { cause?: unknown }).cause,
-                }
-              : String(err),
-        });
-      }
-    }
-
-    return results;
+        try {
+          const output = await tool(args, context.metadata);
+          return {
+            name,
+            success: true,
+            output,
+          };
+        } catch (err) {
+          return {
+            name,
+            success: false,
+            output: null,
+            error:
+              err instanceof Error
+                ? {
+                    message: err.message,
+                    name: err.name,
+                    stack: err.stack,
+                  }
+                : String(err),
+          };
+        }
+      })
+    );
   }
 
   /**
