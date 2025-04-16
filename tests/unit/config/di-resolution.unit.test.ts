@@ -9,6 +9,7 @@ import type { PromptManagerInterface } from '@ollamec/framework/core/interfaces/
 import type { ToolManagerInterface } from '@ollamec/framework/core/interfaces/ToolManagerInterface.ts';
 import { registerBuiltInImplementations } from '@ollamec/framework/core/registerBuiltIns.ts';
 import { InMemorySlidingMemory } from '@ollamec/framework/memory/InMemorySlidingMemory.ts';
+import type { PromptTemplateInterface } from '@ollamec/framework/prompts/PromptTemplateInterface';
 
 describe('Dependency Injection Container', () => {
   beforeAll(() => {
@@ -35,6 +36,17 @@ describe('Dependency Injection Container', () => {
       TOKENS.ToolManager
     );
     expect(toolManager).toBeInstanceOf(DefaultToolManager);
+  });
+
+  it('should resolve PromptTemplates registry with expected entries', () => {
+    const templates = container.resolve<
+      Record<string, PromptTemplateInterface>
+    >(TOKENS.PromptTemplates);
+
+    expect(templates).toBeDefined();
+    expect(typeof templates).toBe('object');
+    expect(templates['summarize-text']).toBeDefined();
+    expect(templates['format-as-json']).toBeDefined();
   });
 
   // Additional DI resolution tests (LLMClient, PromptManager, etc) can be added here

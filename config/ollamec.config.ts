@@ -19,6 +19,9 @@ export const TOKENS = {
 
   /** Transport mechanism for message delivery (e.g., CLI, SSE) */
   Transport: Symbol('Transport'),
+
+  /** A registry of built-in prompt templates (used by PromptManager) */
+  PromptTemplates: Symbol('PromptTemplates'),
 } as const;
 
 /**
@@ -42,7 +45,23 @@ export function registerClass<T>(
 }
 
 /**
- * Internal helper type for class constructors used in DI.
+ * Registers a plain value or object instance to the given DI token.
+ * Useful for injecting constants or registries like built-in templates.
+ *
+ * @param token - DI symbol from `TOKENS`
+ * @param value - The instance or literal value to bind
+ */
+export function registerValue<T>(token: OllamecToken, value: T): void {
+  container.registerInstance<T>(token, value);
+}
+
+/**
+ * Generic class constructor type used for dependency injection.
+ *
+ * Represents any class that can be instantiated with arbitrary arguments
+ * and returns an instance of type `T`.
+ *
+ * This allows `registerClass()` to accept a wide range of valid implementations.
  */
 // biome-ignore lint/suspicious/noExplicitAny: necessary to support DI constructor flexibility
 type Constructor<T> = new (...args: any[]) => T;
