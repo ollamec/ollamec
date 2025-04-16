@@ -1,10 +1,15 @@
-import { TOKENS, registerClass } from '../config/ollamec.config.ts';
+import {
+  TOKENS,
+  registerClass,
+  registerValue,
+} from '../config/ollamec.config.ts';
 
 import { DefaultPromptManager } from '@ollamec/framework/core/DefaultPromptManager.ts';
 import { DefaultToolManager } from '@ollamec/framework/core/DefaultToolManager.ts';
 import { DefaultLLMClient } from '@ollamec/framework/llm/DefaultLLMClient';
 import { DefaultTransport } from '@ollamec/framework/mcp/DefaultTransport';
 import { InMemorySlidingMemory } from '@ollamec/framework/memory/InMemorySlidingMemory.ts';
+import { builtInPromptTemplates } from '@ollamec/framework/prompts/builtins';
 
 /**
  * Registers the default Ollamec strategy implementations into the global DI container.
@@ -44,4 +49,9 @@ export function registerBuiltInImplementations(): void {
    * Register the default transport layer, which simulates LLM interaction.
    */
   registerClass(TOKENS.Transport, DefaultTransport);
+
+  /**
+   * Register the built-in prompt templates registry.
+   */
+  registerValue(TOKENS.PromptTemplates, builtInPromptTemplates);
 }
