@@ -79,7 +79,15 @@ export class DefaultToolManager implements ToolManagerInterface {
           name,
           success: false,
           output: null,
-          error: (err as Error).message,
+          error:
+            err instanceof Error
+              ? {
+                  message: err.message,
+                  stack: err.stack,
+                  name: err.name,
+                  cause: (err as Error & { cause?: unknown }).cause,
+                }
+              : String(err),
         });
       }
     }

@@ -44,7 +44,7 @@ These tasks lay the foundation for the core framework, CLI, DI system, and base 
   - Format OpenAI-style messages
   - Include injected memory and tool responses
 
-- [ ] **Implement ToolManager**  
+- [x] **Implement ToolManager**  
   **Purpose:** Parse and route tool calls  
   **Path:** `core/ToolManager.ts`  
   **Details:**

@@ -38,14 +38,19 @@ describe('DefaultToolManager', () => {
     });
   });
 
-  it('catches tool errors and marks result as failed', async () => {
+  it('catches tool errors and returns structured error details', async () => {
     const input = 'fail()';
     const results = await toolManager.runTools({ input });
 
     expect(results[0]).toMatchObject({
       name: 'fail',
       success: false,
-      error: 'Tool exploded',
+      output: null,
+      error: {
+        message: 'Tool exploded',
+        name: 'Error',
+        stack: expect.any(String),
+      },
     });
   });
 
