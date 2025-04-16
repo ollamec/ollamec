@@ -114,10 +114,13 @@ export class DefaultToolManager implements ToolManagerInterface {
 
     for (const match of input.matchAll(regex)) {
       const name = match[1];
-      const args = match[2]
-        .split(',')
-        .map((arg) => arg.trim())
-        .filter((arg) => arg.length > 0);
+      const args = match[2].length
+        ? match[2].split(',').reduce((acc, arg) => {
+            const trimmed = arg.trim();
+            if (trimmed) acc.push(trimmed);
+            return acc;
+          }, [] as string[])
+        : [];
 
       matches.push({ name, args });
     }
