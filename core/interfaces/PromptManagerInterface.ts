@@ -11,6 +11,7 @@ export interface PromptContext {
 
   /**
    * The historical messages from memory (already fetched).
+   * Optional — when not provided, the prompt will be generated without conversation context.
    */
   chatHistory?: ChatMessage[];
 
