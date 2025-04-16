@@ -18,9 +18,9 @@ export interface ToolResult {
   success: boolean;
 
   /**
-   * Optional error or debug message.
+   * Optional error message or object if the tool failed.
    */
-  error?: string;
+  error?: string | Record<string, unknown>;
 }
 
 /**
