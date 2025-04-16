@@ -37,7 +37,7 @@ These tasks lay the foundation for the core framework, CLI, DI system, and base 
   - Bind defaults to DI tokens
   - Cover strategies for memory, transport, prompt, tools
 
-- [ ] **Implement PromptManager**  
+- [X] **Implement PromptManager**  
   **Purpose:** Compose final LLM prompt array from input, memory, tools  
   **Path:** `core/PromptManager.ts`  
   **Details:**
@@ -51,7 +51,7 @@ These tasks lay the foundation for the core framework, CLI, DI system, and base 
   - Support tool call syntax: `toolName(args)`
   - Inject outputs into LLM message flow
 
-- [ ] **Register MemoryStore via DI**  
+- [X] **Register MemoryStore via DI**  
   **Purpose:** Wire up `InMemorySlidingMemory` as the default `MemoryStoreInterface` in the DI container  
   **Path:** `memory/`, `config/ollamec.config.ts`  
   **Details:**

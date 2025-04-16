@@ -10,9 +10,10 @@ export interface PromptContext {
   userInput: string;
 
   /**
-   * The current memory state (e.g., previous messages or summary).
+   * The historical messages from memory (already fetched).
+   * Optional — when not provided, the prompt will be generated without conversation context.
    */
-  memory?: ChatMessage[];
+  chatHistory?: ChatMessage[];
 
   /**
    * The results from external tool executions that should be included in the prompt.
