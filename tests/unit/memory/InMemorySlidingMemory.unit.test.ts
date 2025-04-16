@@ -63,4 +63,35 @@ describe('InMemorySlidingMemory', () => {
     const fromB = await memory.load();
     expect(fromB).toEqual([{ role: 'user', content: 'From B' }]);
   });
+
+  it('allows append() with an empty array', async () => {
+    const memory = new InMemorySlidingMemory();
+    await memory.connect(session);
+    const result = await memory.append([]);
+    expect(result).toBe(true);
+
+    const loaded = await memory.load();
+    expect(loaded).toEqual([]);
+  });
+
+  it('returns false when appending without connecting first', async () => {
+    const memory = new InMemorySlidingMemory();
+    const result = await memory.append([{ role: 'user', content: 'orphan' }]);
+    expect(result).toBe(false);
+  });
+
+  it('allows calling connect() multiple times for the same session', async () => {
+    const memory = new InMemorySlidingMemory();
+    const firstConnect = await memory.connect(session);
+    const secondConnect = await memory.connect(session);
+    expect(firstConnect).toBe(true);
+    expect(secondConnect).toBe(true);
+  });
+
+  it('loads empty array after connecting and appending nothing', async () => {
+    const memory = new InMemorySlidingMemory();
+    await memory.connect({ id: 'empty' });
+    const result = await memory.load();
+    expect(result).toEqual([]);
+  });
 });
