@@ -37,13 +37,50 @@ describe('InMemorySlidingMemory', () => {
     ]);
   });
 
+  it('evicts oldest messages when exceeding maxMessages', async () => {
+    const memory = new InMemorySlidingMemory(5);
+    await memory.connect({ id: 'sliding-window' });
+
+    const messages = Array.from({ length: 10 }, (_, i) => ({
+      role: 'user',
+      content: `Message ${i + 1}`,
+    }));
+
+    await memory.append(messages);
+    const loaded = await memory.load();
+    expect(loaded).toHaveLength(5);
+    expect(loaded[0].content).toBe('Message 6');
+    expect(loaded[4].content).toBe('Message 10');
+  });
+
   it('returns empty array if loading before connect', async () => {
     const memory = new InMemorySlidingMemory();
     const loaded = await memory.load();
     expect(loaded).toEqual([]);
   });
 
-  it('isolates messages across multiple sessions', async () => {
+  it('allows append() with an empty array (no-op)', async () => {
+    const memory = new InMemorySlidingMemory();
+    await memory.connect(session);
+    const result = await memory.append([]);
+    expect(result).toBe(false);
+  });
+
+  it('returns false when appending without connecting first', async () => {
+    const memory = new InMemorySlidingMemory();
+    const result = await memory.append([{ role: 'user', content: 'orphan' }]);
+    expect(result).toBe(false);
+  });
+
+  it('allows calling connect() multiple times for the same session', async () => {
+    const memory = new InMemorySlidingMemory();
+    const firstConnect = await memory.connect(session);
+    const secondConnect = await memory.connect(session);
+    expect(firstConnect).toBe(true);
+    expect(secondConnect).toBe(true);
+  });
+
+  it('isolates memory between sessions', async () => {
     const memory = new InMemorySlidingMemory();
 
     const sessionA = { id: 'A' };
@@ -62,36 +99,5 @@ describe('InMemorySlidingMemory', () => {
     await memory.connect(sessionB);
     const fromB = await memory.load();
     expect(fromB).toEqual([{ role: 'user', content: 'From B' }]);
-  });
-
-  it('allows append() with an empty array', async () => {
-    const memory = new InMemorySlidingMemory();
-    await memory.connect(session);
-    const result = await memory.append([]);
-    expect(result).toBe(true);
-
-    const loaded = await memory.load();
-    expect(loaded).toEqual([]);
-  });
-
-  it('returns false when appending without connecting first', async () => {
-    const memory = new InMemorySlidingMemory();
-    const result = await memory.append([{ role: 'user', content: 'orphan' }]);
-    expect(result).toBe(false);
-  });
-
-  it('allows calling connect() multiple times for the same session', async () => {
-    const memory = new InMemorySlidingMemory();
-    const firstConnect = await memory.connect(session);
-    const secondConnect = await memory.connect(session);
-    expect(firstConnect).toBe(true);
-    expect(secondConnect).toBe(true);
-  });
-
-  it('loads empty array after connecting and appending nothing', async () => {
-    const memory = new InMemorySlidingMemory();
-    await memory.connect({ id: 'empty' });
-    const result = await memory.load();
-    expect(result).toEqual([]);
   });
 });

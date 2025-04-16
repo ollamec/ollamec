@@ -6,38 +6,54 @@ import type {
 import { injectable } from 'tsyringe';
 
 /**
- * `InMemorySlidingMemory` is a simple in-memory implementation of `MemoryStoreInterface`.
+ * `InMemorySlidingMemory` is a capped, in-memory implementation of `MemoryStoreInterface`.
+ *
+ * ⚠️ This class enforces a sliding window of recent messages using a `maxMessages` limit.
+ * Older messages are trimmed automatically in `append()` as new ones are added.
  *
  * It stores messages in a local `Map` keyed by session ID, making it suitable for:
  * - Stateless agents
  * - Local development or unit testing
  * - Quick prototyping without external storage dependencies
  *
- * This implementation is non-persistent and not safe for distributed use.
+ * @remarks
+ * This implementation is non-persistent and not safe for distributed environments.
  */
 @injectable()
 export class InMemorySlidingMemory implements MemoryStoreInterface {
   /**
-   * The session ID currently in use. This must be set via `connect()` before
-   * memory can be loaded or written.
+   * The maximum number of messages to retain per session.
+   * Older messages are discarded when this limit is exceeded.
+   *
+   * @defaultValue 100
+   */
+  protected maxMessages: number;
+
+  /**
+   * The session ID currently in use. Must be set via `connect()` before memory operations.
    */
   protected currentSessionId: string | null = null;
 
   /**
-   * Internal storage for chat history, keyed by session ID.
-   *
-   * Each session holds its own array of messages. Data is held in memory and
-   * lost on process restart.
+   * Internal storage for message history, keyed by session ID.
    */
   protected memory: Map<string, ChatMessage[]> = new Map();
 
   /**
-   * Connects this memory store to a session, creating the session entry if needed.
+   * Creates a new instance of `InMemorySlidingMemory`.
    *
-   * Must be called before `load()` or `append()` can be used.
+   * @param maxMessages - The maximum number of messages to retain per session. Defaults to 100.
+   */
+  constructor(maxMessages = 100) {
+    this.maxMessages = maxMessages;
+  }
+
+  /**
+   * Connects to a memory session, preparing the store for future operations.
+   * If the session does not yet exist in memory, it is initialized.
    *
-   * @param session - The session to connect to
-   * @returns A promise that resolves to `true` once connected
+   * @param session - The session to activate.
+   * @returns A promise resolving to `true` once connected.
    */
   async connect(session: MemorySession): Promise<boolean> {
     this.currentSessionId = session.id;
@@ -50,18 +66,17 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
   }
 
   /**
-   * Loads a list of chat messages for the currently connected session.
+   * Loads a paged list of messages for the currently connected session.
    *
-   * If `limit` or `offset` are specified, the returned messages are sliced accordingly.
-   *
-   * @param options - Paging options:
+   * @param options - Optional paging parameters:
    *   - `limit`: maximum number of messages to return
-   *   - `offset`: number of messages to skip from the beginning
-   * @returns A promise resolving to the relevant messages, or an empty array if no session is connected
+   *   - `offset`: number of messages to skip from the start
+   * @returns A promise resolving to a sliced list of messages, or an empty array if not connected.
    */
-  async load(options?: { limit?: number; offset?: number }): Promise<
-    ChatMessage[]
-  > {
+  async load(options?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<ChatMessage[]> {
     if (!this.currentSessionId) {
       return [];
     }
@@ -76,22 +91,25 @@ export class InMemorySlidingMemory implements MemoryStoreInterface {
 
   /**
    * Appends new messages to the currently connected session.
+   * If the total exceeds `maxMessages`, older messages are removed from the front.
    *
-   * Messages are added to the end of the session's message history. If no session is
-   * connected, this method returns `false`.
-   *
-   * @param messages - One or more messages to store
-   * @returns A promise resolving to `true` if successful, or `false` if no session is connected
+   * @param messages - One or more chat messages to store.
+   * @returns `true` if messages were stored successfully, or `false` if no session is connected or the array is empty.
    */
   async append(messages: ChatMessage[]): Promise<boolean> {
-    if (!this.currentSessionId) {
+    if (!this.currentSessionId || messages.length === 0) {
       return false;
     }
 
-    const existing = this.memory.get(this.currentSessionId) ?? [];
-    existing.push(...messages);
-    this.memory.set(this.currentSessionId, existing);
+    const sessionMessages = this.memory.get(this.currentSessionId) ?? [];
+    sessionMessages.push(...messages);
 
+    // Trim oldest messages if over cap
+    if (sessionMessages.length > this.maxMessages) {
+      sessionMessages.splice(0, sessionMessages.length - this.maxMessages);
+    }
+
+    this.memory.set(this.currentSessionId, sessionMessages);
     return true;
   }
 }

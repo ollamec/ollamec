@@ -58,10 +58,13 @@ export interface MemoryStoreInterface {
   /**
    * Appends new chat messages to the memory store for the current session.
    *
-   * Implementations should persist or buffer these messages appropriately.
-   *
    * @param messages - One or more chat messages to store.
-   * @returns A promise resolving to `true` if messages were stored successfully.
+   * @returns `true` if messages were stored successfully,
+   *          or `false` if no session is connected or the message array is empty.
+   *
+   * @remarks
+   * Implementations should not throw errors in normal flow. Validation failures (e.g., no session or empty input)
+   * should be handled gracefully by returning `false`.
    */
   append(messages: ChatMessage[]): Promise<boolean>;
 }
