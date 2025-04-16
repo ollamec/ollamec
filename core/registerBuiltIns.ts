@@ -53,5 +53,11 @@ export function registerBuiltInImplementations(): void {
   /**
    * Register the built-in prompt templates registry.
    */
+  if (
+    !builtInPromptTemplates ||
+    Object.keys(builtInPromptTemplates).length === 0
+  ) {
+    throw new Error('Built-in prompt templates are missing or empty');
+  }
   registerValue(TOKENS.PromptTemplates, builtInPromptTemplates);
 }
